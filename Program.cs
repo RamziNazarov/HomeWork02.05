@@ -25,7 +25,7 @@ namespace HomeWork._02._05
         static void AddNumber(List<int> list)
         {
             list.RemoveRange(0,list.Count);
-            int b = new Random().Next(7, 70);
+            int b = new Random().Next(7, 35);
             for (int i = 0; i < b; i++)
             {
                 int a = prover[new Random().Next(0, prover.Count)];
@@ -70,6 +70,7 @@ namespace HomeWork._02._05
         static string[] arrayOfSymbols = { "A", "X", "Z", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "S", "D", "F", "G", "H", "J", "K", "L", "C", "V", "B", "N", "M", "!", "#", "@", "$", "%", "^", "&", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "~" };
         static void Main(string[] args)
         {
+            Console.SetWindowSize(71,40);
             while(true)
             {
                 AddStartPos();
@@ -81,28 +82,85 @@ namespace HomeWork._02._05
                 AddHeights(height2, widthes2.Count);
                 AddPromezh();
                 Task wr;
-                for (int i = 0; i < 30; i++)
+                for (int i = 0; i < 29; i++)
                 {
+                    for (int j = 0; j < widthes2.Count; j++)
+                    {
+                        wr = ShowSec(widthes2[j],height2[j],i);
+                        wr.Wait();
+                        Thread.Sleep(10);
+                    }
                     for (int j = 0; j < widthes1.Count; j++)
                     {
-                        wr = ShowWrite(widthes1[j], height1[j], startPos[j] + i);
+                        wr = ShowWrite(widthes1[j], height1[j],i);
                         wr.Wait();
-                        Thread.Sleep(1);
+                        Thread.Sleep(10);
                     }
                 }
             }
-            Console.ReadKey();
         }
-        async static Task ShowWrite(int posX, int heightOfFirst, int startingPos)
+        async static Task ShowSec(int posX,int height,int startingPosi)
+        {
+            await Task.Run(() => 
+            {
+                int startingPos = 0;
+                for(int i = 0; i < widthes2.Count;i++)
+                {
+                    if(widthes2[i] == posX)
+                    {
+                        startingPos += height2[i];
+                    }
+                }
+                int prom = 0;
+                for(int i = 0; i < startPos.Count;i++)
+                {
+                    if(posX == i)
+                    {
+                        startingPos += promezh[i];
+                        prom = promezh[i];
+                        startingPos += startPos[i];
+                    }
+                }
+                startingPos += startingPosi;
+                while (startingPos < 0)
+                {
+                    startingPos++; height--;
+                }
+                int a = height;
+                for (int i = height + startingPos - 1; i > startingPos - 1 && i < 22; i--)
+                {
+                    a--;
+                    Console.SetCursorPosition(posX, i);
+                    Console.ForegroundColor = ( i == height + startingPos-2) ? ConsoleColor.Green : (i == height + startingPos - 1) ? ConsoleColor.White : ConsoleColor.DarkGreen;
+                    Console.Write(arrayOfSymbols[new Random().Next(0, arrayOfSymbols.Length)]);
+                }
+                if (startingPos > 0)
+                {
+                    for (int i = startingPos - 1; i > startingPos-prom; i--)
+                    {
+                        Console.SetCursorPosition(posX, i);
+                        Console.Write(" ");
+                    }
+                }
+            });
+        }
+        async static Task ShowWrite(int posX, int heightOfFirst, int startingPosi)
         {
             await Task.Run(() =>
             {
+                int startingPos = 0;
+                for(int i = 0; i < startPos.Count;i++)
+                {
+                    if(i == posX)
+                    startingPos += startPos[i];
+                }
+                startingPos += startingPosi; 
                 while (startingPos < 0)
                 {
                     startingPos++; heightOfFirst--;
                 }
                 int a = heightOfFirst;
-                for (int i = heightOfFirst + startingPos - 1; i > startingPos - 1 && i < 25; i--)
+                for (int i = heightOfFirst + startingPos - 1; i > startingPos - 1 && i < 22; i--)
                 {
                     a--;
                     Console.SetCursorPosition(posX, i);
@@ -118,29 +176,6 @@ namespace HomeWork._02._05
                     }
                 }
             });
-            // if(a == 0)
-            // {
-            // }
-            // else
-            // {
-            //     if(g < heightOfFirst-1)
-            //     {
-            //         if(startingPos >0)
-            //         {
-            //             for(int i = startingPos; i >g-1; i--)
-            //             {
-            //                 Console.SetCursorPosition(posX,i);
-            //                 Console.Write(" ");
-            //             }
-            //         }
-            //         for(int i = g; i > -1;i--)
-            //         {
-            //             Console.SetCursorPosition(posX,i);
-            //             Console.Write(arrayOfSymbols[new Random().Next(0,arrayOfSymbols.Length)]);
-            //         }
-            //     }
-            //     g++;
-            // }
         }
     }
 }
