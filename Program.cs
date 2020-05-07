@@ -46,7 +46,7 @@ namespace HomeWork._02._05
         {
             for (int i = 0; i < 71; i++)
             {
-                promezh.Add(new Random().Next(2, 5));
+                promezh.Add(new Random().Next(3, 5));
             }
         }
         static void AddStartPos()
@@ -68,8 +68,22 @@ namespace HomeWork._02._05
             Console.WriteLine("\n\n\n");
         }
         static string[] arrayOfSymbols = { "A", "X", "Z", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "S", "D", "F", "G", "H", "J", "K", "L", "C", "V", "B", "N", "M", "!", "#", "@", "$", "%", "^", "&", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "~" };
+        static void Summ(int a,int b)
+        {
+            System.Console.WriteLine(a+b);
+        }
         static void Main(string[] args)
         {
+            #region Parallel
+            Parallel.Invoke(()=>{Summ(1,2);},()=>{Summ(5,14);},()=>{Summ(-123,2154);});
+            #endregion
+            #region Async
+            // пример использования асинхронного программирования
+            Async.WriteToFileAsync(arrayOfSymbols);
+            #endregion
+            #region Thread
+            ThreadingEx.DoSomething();
+            #endregion
             Console.SetWindowSize(71,40);
             while(true)
             {
@@ -86,20 +100,20 @@ namespace HomeWork._02._05
                 {
                     for (int j = 0; j < widthes2.Count; j++)
                     {
-                        wr = ShowSec(widthes2[j],height2[j],i);
+                        wr = ShowSecAsync(widthes2[j],height2[j],i);
                         wr.Wait();
                         Thread.Sleep(10);
                     }
                     for (int j = 0; j < widthes1.Count; j++)
                     {
-                        wr = ShowWrite(widthes1[j], height1[j],i);
+                        wr = ShowWriteAsync(widthes1[j], height1[j],i);
                         wr.Wait();
                         Thread.Sleep(10);
                     }
                 }
             }
         }
-        async static Task ShowSec(int posX,int height,int startingPosi)
+        async static Task ShowSecAsync(int posX,int height,int startingPosi)
         {
             await Task.Run(() => 
             {
@@ -144,7 +158,7 @@ namespace HomeWork._02._05
                 }
             });
         }
-        async static Task ShowWrite(int posX, int heightOfFirst, int startingPosi)
+        async static Task ShowWriteAsync(int posX, int heightOfFirst, int startingPosi)
         {
             await Task.Run(() =>
             {
